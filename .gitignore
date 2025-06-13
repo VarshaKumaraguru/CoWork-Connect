@@ -1,0 +1,33 @@
+# ========== Node.js / React (Frontend) ==========
+frontend/node_modules/
+frontend/build/
+
+# ========== Python / Flask (Backend) ==========
+backend/__pycache__/
+backend/.env
+backend/config.py
+backend/venv/
+backend/uploads
+backend/upi_qr_codes
+
+# ========== General ==========
+.DS_Store
+.env
+*.log
+*.pyc
+*.pyo
+*.pyd
+.vscode/
+.idea/
+
+# Yarn/NPM debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# PnP
+.pnp/
+.pnp.js
+
+# Test coverage
+coverage/

@@ -1,0 +1,118 @@
+.preferences-container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #f59024da, #feb47b);
+    padding: 20px;
+  }
+  
+  .preferences-form-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 4rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 80px;
+  }
+  
+  .preferences-form-box h2 {
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .preferences-form-box p {
+    color: #4a5568;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .preferences-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    color: #4a5568;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  .form-group input::placeholder {
+    color: #a0aec0;
+  }
+  
+  .submit-button {
+    background: #f59024;
+    color: white;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+  }
+  
+  .submit-button:hover {
+    background: #e67e22;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 144, 36, 0.2);
+  }
+  
+  .submit-button:active {
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 640px) {
+    .preferences-container {
+      padding: 1rem;
+    }
+    
+    .preferences-form-box {
+      padding: 1.5rem;
+    }
+    
+    .preferences-form-box h2 {
+      font-size: 1.5rem;
+    }
+    
+    .form-group input,
+    .form-group select {
+      padding: 0.625rem;
+    }
+  }

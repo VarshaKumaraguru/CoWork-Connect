@@ -1,0 +1,131 @@
+.contact-container {
+  padding: 2rem;
+  padding-top: 100px;
+  min-height: 100vh;
+  background: linear-gradient(to right, #f59024da, #feb47b);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.contact-form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.contact-form-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.form-description {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #f59024;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: #fff5f5;
+  color: #f56565;
+  padding: 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.success-message {
+  text-align: center;
+  padding: 2rem;
+}
+
+.success-message h2 {
+  color: #4CAF50;
+  margin-bottom: 1rem;
+}
+
+.success-message p {
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 1rem;
+    padding-top: 80px;
+  }
+
+  .contact-form-container {
+    padding: 1.5rem;
+  }
+
+  .contact-form-container h1 {
+    font-size: 1.75rem;
+  }
+
+  .form-description {
+    font-size: 1rem;
+  }
+} 
