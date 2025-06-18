@@ -1,7 +1,1 @@
-Flask
-Flask-CORS
-psycopg2-binary
-Werkzeug
-flask_sqlalchemy
-flask_dance
-authlib
+
