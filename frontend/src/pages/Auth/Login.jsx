@@ -18,7 +18,9 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+      const response = await fetch(`${BACKEND_URL}/login`, {
+
         username,
         password
       });
