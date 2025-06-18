@@ -12,7 +12,9 @@ function SpaceOwnerLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/spaceowner/login", {
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+    const response = await fetch(`${BACKEND_URL}/spaceowner/login`, {
+
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
