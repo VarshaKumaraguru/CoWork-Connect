@@ -20,7 +20,7 @@ load_dotenv()
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)  # Initialize Flask-Migrate
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=[os.environ.get("FRONTEND_ORIGIN")])
 
 # Initialize Flask-Mail for contact form
 contact_mail = Mail(app)
