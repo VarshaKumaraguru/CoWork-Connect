@@ -18,6 +18,12 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 load_dotenv()
 app.config.from_object(Config)
+database_url = os.environ["DATABASE_URL"].replace(
+    "postgresql://", "postgresql+psycopg2://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)  # Initialize Flask-Migrate
 CORS(app, origins=["https://cowork-connect-2.onrender.com"], supports_credentials=True)
