@@ -1,3 +1,4 @@
+from flask import current_app
 from flask import Flask, request, jsonify, session, send_from_directory
 import smtplib
 from dotenv import load_dotenv
