@@ -10,32 +10,6 @@ function SpaceOwnerLogin() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-    const response = await fetch(`${BACKEND_URL}/spaceowner/login`, {
-
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        username: username.toLowerCase(), // Convert to lowercase before sending
-        password 
-      }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      // Store the username and ownerId in localStorage upon successful login
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('ownerId', data.owner_id); // Storing ownerId too
-      alert("Space Owner login successful!");
-      navigate(data.dashboard_url); // Redirect to the dashboard
-    } else {
-      setError(data.error || "Login failed");
-    }
-  };
-
-  const handleLogin = async (e) => {
   e.preventDefault();
   setError("");
 
@@ -73,6 +47,18 @@ function SpaceOwnerLogin() {
     console.error(err);
   }
 };
+
+    const data = await response.json();
+    if (response.ok) {
+      // Store the username and ownerId in localStorage upon successful login
+      localStorage.setItem('username', data.username);
+      localStorage.setItem('ownerId', data.owner_id); // Storing ownerId too
+      alert("Space Owner login successful!");
+      navigate(data.dashboard_url); // Redirect to the dashboard
+    } else {
+      setError(data.error || "Login failed");
+    }
+  };
 
   return (
     <div className="auth-container">
