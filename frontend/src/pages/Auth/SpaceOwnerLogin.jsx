@@ -10,53 +10,42 @@ function SpaceOwnerLogin() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
-  const BACKEND_URL =
-    process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+    const BACKEND_URL =
+      process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
-  try {
-    const response = await fetch(`${BACKEND_URL}/spaceowner/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username.trim().toLowerCase(),
-        password,
-      }),
-    });
-
-    // ↓ Don’t assume it’s JSON
-    const text = await response.text();
-    let data;
     try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error(`Server returned non‑JSON: ${text.slice(0, 120)}…`);
-    }
+      const response = await fetch(`${BACKEND_URL}/spaceowner/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username.trim().toLowerCase(),
+          password,
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error(data.error || "Login failed");
-    }
+      /* ---- robust JSON parse ---- */
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Server returned non‑JSON: ${text.slice(0, 120)}…`);
+      }
+      /* -------------------------------- */
 
-    localStorage.setItem("username", data.username);
-    localStorage.setItem("ownerId", data.owner_id);
-    navigate(data.dashboard_url);
-  } catch (err) {
-    setError(err.message);
-    console.error(err);
-  }
-};
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed");
+      }
 
-    const data = await response.json();
-    if (response.ok) {
-      // Store the username and ownerId in localStorage upon successful login
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('ownerId', data.owner_id); // Storing ownerId too
-      alert("Space Owner login successful!");
-      navigate(data.dashboard_url); // Redirect to the dashboard
-    } else {
-      setError(data.error || "Login failed");
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("ownerId", data.owner_id);
+      navigate(data.dashboard_url); // e.g. "/spaceowner/dashboard"
+    } catch (err) {
+      setError(err.message);
+      console.error(err);
     }
   };
 
@@ -96,8 +85,11 @@ function SpaceOwnerLogin() {
         </form>
         {error && <p className="auth-error">{error}</p>}
         <p className="auth-switch-text">
-          Don't have an account?{" "}
-          <span onClick={() => navigate("/spaceowner/signin")} className="auth-link">
+          Don&rsquo;t have an account?{" "}
+          <span
+            onClick={() => navigate("/spaceowner/signin")}
+            className="auth-link"
+          >
             Sign Up
           </span>
         </p>
