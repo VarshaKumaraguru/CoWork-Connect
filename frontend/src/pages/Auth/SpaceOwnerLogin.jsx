@@ -35,6 +35,45 @@ function SpaceOwnerLogin() {
     }
   };
 
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  setError("");
+
+  const BACKEND_URL =
+    process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/spaceowner/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username.trim().toLowerCase(),
+        password,
+      }),
+    });
+
+    // ↓ Don’t assume it’s JSON
+    const text = await response.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(`Server returned non‑JSON: ${text.slice(0, 120)}…`);
+    }
+
+    if (!response.ok) {
+      throw new Error(data.error || "Login failed");
+    }
+
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("ownerId", data.owner_id);
+    navigate(data.dashboard_url);
+  } catch (err) {
+    setError(err.message);
+    console.error(err);
+  }
+};
+
   return (
     <div className="auth-container">
       <div className="auth-box">
