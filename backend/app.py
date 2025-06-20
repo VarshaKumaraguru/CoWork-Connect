@@ -148,24 +148,36 @@ def spaceowner_signup():
 # Space Owner Login
 @app.route("/spaceowner/login", methods=["POST"])
 def spaceowner_login():
-    data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
+    # 1. Make sure the request even *claims* to be JSON
+    if not request.is_json:
+        return jsonify(error="Request must be JSON"), 400
+
+    # 2. Parse it safely
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify(error="Malformed JSON"), 400
+
+    username = (data.get("username") or "").strip().lower()
+    password = data.get("password") or ""
 
     if not username or not password:
-        return jsonify({"error": "Missing fields"}), 400
+        return jsonify(error="Missing username or password"), 400
 
-    owner = SpaceOwner.query.filter_by(username=username).first()  # Check by username only
+    try:
+        owner = SpaceOwner.query.filter_by(username=username).first()
+    except Exception as exc:
+        current_app.logger.exception("DB failure in /spaceowner/login")
+        return jsonify(error="Server database failure"), 500
 
-    if not owner or not check_password_hash(owner.password, password):
-        return jsonify({"error": "Invalid username or password"}), 401
+    if owner is None or not check_password_hash(owner.password, password):
+        return jsonify(error="Invalid credentials"), 401
 
-    return jsonify({
-        "message": "Space owner login successful",
-        "owner_id": owner.id,
-        "username": owner.username,
-        "dashboard_url": "/dashboard"
-    }), 200
+    return jsonify(
+        message="Space owner login successful",
+        owner_id=owner.id,
+        username=owner.username,
+        dashboard_url="/spaceowner/dashboard",
+    ), 200
 
 # --------------------------
 # Space Management APIs
