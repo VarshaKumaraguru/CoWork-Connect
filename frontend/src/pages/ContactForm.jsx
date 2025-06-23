@@ -15,6 +15,8 @@ const ContactForm = () => {
     error: null
   });
 
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -28,8 +30,7 @@ const ContactForm = () => {
     setStatus(prevState => ({ ...prevState, submitting: true, error: null }));
 
     try {
-      // Replace with your actual backend endpoint
-      await axios.post('http://localhost:5000/api/contact', formData);
+      await axios.post(`${API_BASE_URL}/api/contact`, formData);
       setStatus({
         submitted: true,
         submitting: false,
@@ -125,5 +126,4 @@ const ContactForm = () => {
     </>
   );
 };
-
 export default ContactForm; 
