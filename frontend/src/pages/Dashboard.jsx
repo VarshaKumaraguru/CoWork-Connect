@@ -3,6 +3,8 @@ import axios from 'axios';
 import SpaceForm from './SpaceForm';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Dashboard = () => {
   const [spaces, setSpaces] = useState([]);
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const Dashboard = () => {
 
   const fetchSpaces = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/spaceowner/spaces', {
+      const response = await axios.get(`${API_BASE_URL}/spaceowner/spaces`, {
         params: { owner_id: localStorage.getItem('ownerId') }
       });
       setSpaces(response.data.spaces);
@@ -33,7 +35,7 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/spaceowner/space/${id}`, {
+      await axios.delete(`${API_BASE_URL}/spaceowner/space/${id}`, {
         data: { owner_id: localStorage.getItem('ownerId') }
       });
       setSpaces(spaces.filter((space) => space.id !== id));
