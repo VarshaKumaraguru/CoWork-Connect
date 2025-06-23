@@ -14,25 +14,26 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-      const response = await fetch(`${BACKEND_URL}/login`, {
-
-        username,
-        password
+      const response = await axios.post("http://localhost:5000/login", {
+        username: username.toLowerCase(),
+        email,
+        password,
       });
 
       if (response.data.user_id) {
-        localStorage.setItem('userId', response.data.user_id);
-        localStorage.setItem('username', response.data.username);
+        localStorage.setItem("userId", response.data.user_id);
+        localStorage.setItem("username", response.data.username);
         // Redirect to preferences form instead of UserDashboard
-        navigate('/preferences');
+        navigate("/preferences");
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'An error occurred during login');
+      setError(
+        err.response?.data?.error || "An error occurred during login"
+      );
     } finally {
       setLoading(false);
     }
@@ -78,11 +79,11 @@ function Login() {
           </div>
           {error && <p className="auth-error">{error}</p>}
           <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="auth-switch-text">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span onClick={() => navigate("/signin")} className="auth-link">
             Sign Up
           </span>
