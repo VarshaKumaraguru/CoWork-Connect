@@ -1,4 +1,3 @@
-from flask import current_app
 from flask import Flask, request, jsonify, session, send_from_directory
 import smtplib
 from dotenv import load_dotenv
@@ -19,15 +18,13 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 load_dotenv()
 app.config.from_object(Config)
-database_url = os.environ["DATABASE_URL"].replace(
-    "postgresql://", "postgresql+psycopg2://", 1)
-
-app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)  # Initialize Flask-Migrate
-CORS(app, origins=["https://cowork-connect-2.onrender.com"], supports_credentials=True)
+frontend_url = os.environ.get('FRONTEND_URL')
+if frontend_url:
+    CORS(app, origins=[frontend_url], supports_credentials=True)
+else:
+    CORS(app, supports_credentials=True)
 
 # Initialize Flask-Mail for contact form
 contact_mail = Mail(app)
@@ -155,36 +152,24 @@ def spaceowner_signup():
 # Space Owner Login
 @app.route("/spaceowner/login", methods=["POST"])
 def spaceowner_login():
-    # 1. Make sure the request even *claims* to be JSON
-    if not request.is_json:
-        return jsonify(error="Request must be JSON"), 400
-
-    # 2. Parse it safely
-    data = request.get_json(silent=True)
-    if data is None:
-        return jsonify(error="Malformed JSON"), 400
-
-    username = (data.get("username") or "").strip().lower()
-    password = data.get("password") or ""
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
 
     if not username or not password:
-        return jsonify(error="Missing username or password"), 400
+        return jsonify({"error": "Missing fields"}), 400
 
-    try:
-        owner = SpaceOwner.query.filter_by(username=username).first()
-    except Exception as exc:
-        current_app.logger.exception("DB failure in /spaceowner/login")
-        return jsonify(error="Server database failure"), 500
+    owner = SpaceOwner.query.filter_by(username=username).first()  # Check by username only
 
-    if owner is None or not check_password_hash(owner.password, password):
-        return jsonify(error="Invalid credentials"), 401
+    if not owner or not check_password_hash(owner.password, password):
+        return jsonify({"error": "Invalid username or password"}), 401
 
-    return jsonify(
-        message="Space owner login successful",
-        owner_id=owner.id,
-        username=owner.username,
-        dashboard_url="/spaceowner/dashboard",
-    ), 200
+    return jsonify({
+        "message": "Space owner login successful",
+        "owner_id": owner.id,
+        "username": owner.username,
+        "dashboard_url": "/dashboard"
+    }), 200
 
 # --------------------------
 # Space Management APIs
@@ -579,10 +564,10 @@ def contact():
         msg['To'] = to_email
 
         # Get SMTP configuration from environment variables
-        smtp_server = os.getenv("SMTP_SERVER")
-        smtp_port = int(os.getenv("SMTP_PORT"))
-        smtp_user = os.getenv("SMTP_USER")
-        smtp_password = os.getenv("SMTP_PASSWORD")
+        smtp_server = os.getenv("CONTACT_MAIL_SERVER")
+        smtp_port = int(os.getenv("CONTACT_MAIL_PORT"))
+        smtp_user = os.getenv("CONTACT_MAIL_USERNAME")
+        smtp_password = os.getenv("CONTACT_MAIL_PASSWORD")
 
         # Basic null check for required env vars
         if not all([smtp_server, smtp_port, smtp_user, smtp_password]):
@@ -601,4 +586,4 @@ def contact():
         return jsonify({"error": "Failed to send email"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
