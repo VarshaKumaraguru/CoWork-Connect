@@ -12,6 +12,8 @@ function SpaceOwnerSignup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -20,9 +22,7 @@ function SpaceOwnerSignup() {
       return;
     }
 
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-    const response = await fetch(`${BACKEND_URL}/spaceowner/signup`, {
-
+    const response = await fetch(`${API_BASE_URL}/spaceowner/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
