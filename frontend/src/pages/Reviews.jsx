@@ -3,6 +3,8 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import './Reviews.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Reviews = () => {
   const [spaces, setSpaces] = useState([]);
   const [selectedSpace, setSelectedSpace] = useState(null);
@@ -16,7 +18,7 @@ const Reviews = () => {
 
   const fetchSpaces = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/spaces');
+      const response = await axios.get(`${API_BASE_URL}/api/spaces`);
       setSpaces(response.data.spaces);
     } catch (error) {
       console.error('Error fetching spaces:', error);
@@ -44,7 +46,7 @@ const Reviews = () => {
         return;
       }
 
-      const response = await axios.post('http://localhost:5000/api/reviews', {
+      const response = await axios.post(`${API_BASE_URL}/api/reviews`, {
         space_id: selectedSpace.id,
         user_id: userId,
         rating: 5, // Default rating since we're not using stars
