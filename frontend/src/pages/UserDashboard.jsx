@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar';
 import './UserDashboardStyle.css';
 import ContactOwnerButton from './ContactOwnerButton';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const UserDashboard = () => {
   const [spaces, setSpaces] = useState([]);
   const [filteredSpaces, setFilteredSpaces] = useState([]);
@@ -24,7 +26,7 @@ const UserDashboard = () => {
 
   const fetchSpaces = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/spaces");
+      const response = await axios.get(`${API_BASE_URL}/api/spaces`);
       console.log("Spaces data with reviews:", response.data.spaces); // Debug log for spaces with reviews
       
       // The backend is already sending full URLs, so we don't need to transform them
@@ -66,7 +68,7 @@ const UserDashboard = () => {
     try {
       console.log("Attempting to fetch details for space:", spaceId); // Debug log
       // Fetch the space details including UPI QR code
-      const response = await axios.get(`http://localhost:5000/api/spaces/${spaceId}`);
+      const response = await axios.get(`${API_BASE_URL}/api/spaces/${spaceId}`);
       console.log("Space details:", response.data); // Debug log
       
       if (!response.data) {
