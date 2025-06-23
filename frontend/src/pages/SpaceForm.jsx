@@ -8,6 +8,8 @@ import './SpaceFormStyle.css';
 import { motion } from 'framer-motion';
 import Confetti from 'react-confetti';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const SpaceForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -97,7 +99,7 @@ const SpaceForm = () => {
         upi_qr_type: upiQR.type
       }); // Debug log
 
-      const response = await axios.post('http://localhost:5000/spaceowner/space', data, {
+      const response = await axios.post(`${API_BASE_URL}/spaceowner/space`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
